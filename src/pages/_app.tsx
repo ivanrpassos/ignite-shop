@@ -1,9 +1,10 @@
 import { globalStyles } from '@/styles/global';
 import type { AppProps } from 'next/app';
-import Image from 'next/image';
 
 import logoImage from '../assets/logo.svg';
 import { Container, Header } from '@/styles/pages/app';
+
+import Image from 'next/image';
 
 globalStyles();
 
