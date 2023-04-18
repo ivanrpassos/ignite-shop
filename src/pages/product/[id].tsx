@@ -1,5 +1,5 @@
 // Next
-import { GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 
 // Styles
@@ -48,16 +48,27 @@ export default function Product({ product }: ProductProps) {
   );
 }
 
+export const getStaticPaths: GetStaticPaths =
+  async ({}) => {
+    return {
+      paths: [
+        {
+          params: { id: 'prod_NiuzvjIQq3nAAi' },
+        },
+      ],
+      fallback: 'blocking',
+    };
+  };
+
 export const getStaticProps: GetStaticProps<
   any,
   { id: string }
 > = async ({ params }) => {
   const productId = params.id;
-
   const product = await stripe.products.retrieve(
     productId,
     {
-      expand: ['default.price'],
+      expand: ['default_price'],
     },
   );
 
@@ -72,10 +83,10 @@ export const getStaticProps: GetStaticProps<
         price: new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
-        }).format(price.unit_amount! / 100),
+        }).format(price.unit_amount / 100),
         description: product.description,
       },
     },
-    revalidate: 60 * 60 * 2, // 2 hours
+    revalidate: 60 * 60 * 1,
   };
 };
