@@ -21,10 +21,15 @@ interface ProductProps {
     imageUrl: string;
     price: string;
     description: string;
+    defaultPriceId: string;
   };
 }
 
 export default function Product({ product }: ProductProps) {
+  function buyProduct() {
+    console.log(product.defaultPriceId);
+  }
+
   return (
     <ProductContainer>
       <ImageContainer>
@@ -42,7 +47,7 @@ export default function Product({ product }: ProductProps) {
 
         <p>{product.description}</p>
 
-        <button>Comprar agora</button>
+        <button onClick={buyProduct}>Comprar agora</button>
       </ProductDetails>
     </ProductContainer>
   );
@@ -84,6 +89,9 @@ export const getStaticProps: GetStaticProps<
           currency: 'BRL',
         }).format(price.unit_amount / 100),
         description: product.description,
+
+        // pegando o valor padrão do produto
+        defaultPriceId: price.id,
       },
     },
     revalidate: 60 * 60 * 1,
